@@ -1,0 +1,137 @@
+:root {
+  --ease-out-expo: cubic-bezier(.22, 1, .36, 1);
+  --ease-smooth: cubic-bezier(.4, 0, .2, 1);
+  --duration-fast: 180ms;
+  --duration-medium: 320ms;
+  --duration-slow: 760ms;
+}
+
+.site-nav > a:not(.nav-cta) {
+  position: relative;
+  transition: opacity var(--duration-fast) var(--ease-smooth);
+}
+
+.site-nav > a:not(.nav-cta)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration-medium) var(--ease-out-expo);
+}
+
+.site-nav > a[aria-current="page"]:not(.nav-cta) { opacity: 1; }
+.site-nav > a[aria-current="page"]:not(.nav-cta)::after { transform: scaleX(1); }
+.nav-cta[aria-current="page"] { box-shadow: inset 0 0 0 1px var(--lime); }
+
+.button,
+.nav-cta {
+  transition: transform var(--duration-fast) var(--ease-out-expo), background-color var(--duration-medium) var(--ease-smooth);
+}
+
+.button > span,
+.nav-cta > span,
+.text-link > span {
+  display: inline-block;
+  transition: transform var(--duration-medium) var(--ease-out-expo);
+}
+
+.button:active,
+.nav-cta:active { transform: scale(.97); }
+
+.ways-grid article {
+  position: relative;
+  border-top: 0;
+}
+
+.ways-grid article::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--ink);
+  transform-origin: left center;
+  transition: transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.motion-ready .ways-grid article::before { transform: scaleX(0); }
+.motion-ready .ways-grid article.is-visible::before { transform: scaleX(1); }
+
+.ways-grid article.reveal-complete h3,
+.ways-grid article.reveal-complete > span {
+  transition: transform var(--duration-medium) var(--ease-smooth), opacity var(--duration-medium) var(--ease-smooth);
+}
+
+.motion-ready .cta-band .button,
+.motion-ready .contact-panel .button { transition: none; }
+.motion-ready .cta-band.reveal-complete .button,
+.motion-ready .contact-panel.reveal-complete .button {
+  transition: transform var(--duration-fast) var(--ease-out-expo), background-color var(--duration-medium) var(--ease-smooth);
+}
+
+.volunteer-poster > span { display: block; }
+.volunteer-poster .poster-word { display: block; width: max-content; max-width: 100%; }
+
+@media (hover: hover) and (pointer: fine) {
+  .site-nav > a:not(.nav-cta):hover { opacity: 1; }
+  .site-nav > a:not(.nav-cta):hover::after { transform: scaleX(1); }
+  .button:hover { transform: translateY(-2px); }
+  .button:hover > span,
+  .nav-cta:hover > span { transform: translate(3px, -2px); }
+  .text-link:hover > span { transform: translateX(3px); }
+  .ways-grid article:hover h3 { transform: translateX(5px); }
+  .ways-grid article:hover > span { opacity: .55; }
+}
+
+@media (max-width: 800px) {
+  .site-nav {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-8px) scale(.985);
+    transform-origin: top right;
+    transition: opacity var(--duration-medium) var(--ease-out-expo), transform var(--duration-medium) var(--ease-out-expo), visibility 0s linear var(--duration-medium);
+  }
+
+  .site-nav.is-open {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: opacity var(--duration-medium) var(--ease-out-expo), transform var(--duration-medium) var(--ease-out-expo), visibility 0s;
+  }
+
+  .site-nav > a {
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: opacity var(--duration-fast) var(--ease-out-expo), transform var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .site-nav.is-open > a { opacity: 1; transform: translateY(0); }
+  .site-nav.is-open > a:nth-child(1) { transition-delay: 40ms; }
+  .site-nav.is-open > a:nth-child(2) { transition-delay: 85ms; }
+  .site-nav.is-open > a:nth-child(3) { transition-delay: 130ms; }
+  .site-nav.menu-instant,
+  .site-nav.menu-instant > a { transition: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav,
+  .site-nav > a,
+  .button,
+  .button > span,
+  .nav-cta,
+  .nav-cta > span,
+  .text-link > span,
+  .ways-grid h3,
+  .ways-grid article > span,
+  .ways-grid article::before { transition-duration: 0.01ms !important; }
+  .motion-ready .ways-grid article::before { transform: scaleX(1); }
+}
