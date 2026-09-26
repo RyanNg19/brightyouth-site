@@ -16,9 +16,11 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 5px;
+  /* Keep the line clear of descenders in the navigation label. */
+  bottom: -6px;
   height: 1px;
   background: currentColor;
+  pointer-events: none;
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform var(--duration-medium) var(--ease-out-expo);
