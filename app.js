@@ -4,7 +4,7 @@
   const nav = document.querySelector('.site-nav');
 
   if (nav) {
-    const current = page === 'about' ? 'about.html' : page === 'programs' ? 'programs.html' : page === 'volunteer' ? 'volunteer.html' : '';
+    const current = { about: 'about.html', programs: 'programs.html', events: 'events.html', volunteer: 'volunteer.html' }[page] || '';
     const activeLink = [...nav.querySelectorAll('a')].find((link) => link.getAttribute('href') === current);
     if (activeLink) activeLink.setAttribute('aria-current', 'page');
   }
@@ -50,7 +50,55 @@
 
   gsap.from('.site-header', { y: -12, autoAlpha: 0, duration: .55, ease: 'power3.out' });
 
-  if (page === 'volunteer') {
+  if (page === 'events') {
+    const hero = document.querySelector('.events-hero');
+    gsap.from('.events-hero-photo', { scale: 1.08, duration: 1.5, ease: 'power3.out' });
+    gsap.to('.events-hero-photo', {
+      scale: 1.04, opacity: .2, ease: 'none',
+      scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: .6 }
+    });
+    gsap.from(hero.querySelectorAll('.events-kicker, h1, .events-hero-intro, .events-hero-actions'), {
+      y: mobile ? 15 : 28, autoAlpha: 0, duration: .9, stagger: .11, ease: 'power3.out', delay: .13
+    });
+
+    const compactGallery = window.matchMedia('(max-width: 650px)').matches;
+    document.querySelectorAll('.event-year').forEach((year) => {
+      const yearHeading = year.querySelector('.event-year-heading');
+      gsap.from(yearHeading.children, {
+        y: mobile ? 15 : 28, autoAlpha: 0, duration: .8, stagger: .12, ease: 'power3.out',
+        scrollTrigger: { trigger: yearHeading, start: 'top 85%', once: true }
+      });
+      const index = year.querySelector('.event-index');
+      gsap.from(index.children, {
+        y: mobile ? 12 : 28, autoAlpha: 0, duration: .8, stagger: .12, ease: 'power3.out',
+        scrollTrigger: { trigger: index, start: 'top 84%', once: true }
+      });
+
+      year.querySelectorAll('.event-story').forEach((story, storyIndex) => {
+      if (storyIndex && !compactGallery) {
+        gsap.fromTo(story, { y: 48, scale: .985 }, {
+          y: 0, scale: 1, ease: 'none',
+          scrollTrigger: { trigger: story, start: 'top 95%', end: 'top 56%', scrub: .6 }
+        });
+      } else {
+        gsap.from(story, {
+          y: compactGallery ? 18 : 28, autoAlpha: 0, duration: .8, ease: 'power3.out',
+          scrollTrigger: { trigger: story, start: 'top 88%', once: true }
+        });
+      }
+      gsap.from(story.querySelectorAll('.event-story-copy > *'), {
+        y: smallTravel, autoAlpha: 0, duration: .65, stagger: .08, ease: 'power3.out',
+        scrollTrigger: { trigger: story, start: 'top 76%', once: true }
+      });
+      story.querySelectorAll('.event-story-media img').forEach((photo) => {
+        gsap.fromTo(photo, { scale: .9 }, {
+          scale: 1, ease: 'none',
+          scrollTrigger: { trigger: story, start: 'top 92%', end: 'top 36%', scrub: .6 }
+        });
+      });
+      });
+    });
+  } else if (page === 'volunteer') {
     const hero = document.querySelector('.volunteer-hero');
     const [eyebrow, headline, description] = hero.querySelector('div:first-child').children;
     const poster = hero.querySelector('.volunteer-poster');
