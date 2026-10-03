@@ -1,0 +1,301 @@
+.volunteer-page {
+  background: var(--cream);
+}
+
+.volunteer-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+  align-items: center;
+  gap: clamp(30px, 5.5vw, 90px);
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: clamp(145px, 13vw, 195px) 7vw clamp(95px, 10vw, 145px);
+}
+
+.volunteer-hero-copy {
+  min-width: 0;
+}
+
+.volunteer-hero h1 {
+  max-width: 1100px;
+  margin: 26px 0;
+  font-family: "Cabinet Grotesk", Manrope, Arial, sans-serif;
+  font-size: clamp(3.3rem, 6.6vw, 7.25rem);
+  font-weight: 800;
+  line-height: .95;
+  letter-spacing: -.065em;
+}
+
+.volunteer-hero-intro {
+  max-width: 520px;
+  margin: 0;
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.6;
+}
+
+.volunteer-hero-copy .button {
+  margin-top: 34px;
+}
+
+.volunteer-hero-figure {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  background: #f9bd9f;
+}
+
+.volunteer-hero-media {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #b3a693;
+}
+
+.volunteer-hero-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 52% center;
+  filter: saturate(.9);
+}
+
+.volunteer-hero-statement {
+  padding: clamp(26px, 3.3vw, 50px);
+  border-top: 1px solid var(--ink);
+  font-family: "Cabinet Grotesk", Manrope, Arial, sans-serif;
+  font-size: clamp(2rem, 3.8vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -.055em;
+  line-height: 1;
+}
+
+.volunteer-roles {
+  padding: clamp(100px, 12vw, 180px) 7vw;
+  border-top: 1px solid var(--ink);
+  background: #ece7dd;
+  scroll-margin-top: 100px;
+}
+
+.volunteer-roles-inner {
+  max-width: 1540px;
+  margin: 0 auto;
+}
+
+.volunteer-roles-heading h2 {
+  max-width: 940px;
+  margin: 24px 0 clamp(45px, 5vw, 72px);
+  font-size: clamp(3rem, 6.5vw, 7rem);
+  font-weight: 800;
+  line-height: .94;
+  letter-spacing: -.065em;
+}
+
+.volunteer-role-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: 0;
+  border: 1px solid var(--ink);
+}
+
+.volunteer-role {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  min-height: clamp(335px, 28vw, 430px);
+  padding: clamp(24px, 2.7vw, 42px);
+}
+
+.volunteer-role + .volunteer-role {
+  border-left: 1px solid var(--ink);
+}
+
+.volunteer-role-trail { background: var(--blue); }
+.volunteer-role-club { background: var(--lime); }
+.volunteer-role-community { background: #f9bd9f; }
+
+.volunteer-role-number {
+  display: block;
+  font: 500 11px "DM Mono", monospace;
+  letter-spacing: .08em;
+}
+
+.volunteer-role-copy {
+  margin-top: 68px;
+}
+
+.volunteer-role h3 {
+  margin: 0 0 22px;
+  font-size: clamp(2rem, 3.4vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.055em;
+}
+
+.volunteer-role p {
+  max-width: 360px;
+  margin: 0;
+  font-size: clamp(16px, 1.2vw, 18px);
+  line-height: 1.6;
+}
+
+.volunteer-contact {
+  padding: clamp(110px, 13vw, 200px) 7vw;
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.volunteer-contact-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: clamp(35px, 6vw, 95px);
+  max-width: 1540px;
+  margin: 0 auto;
+}
+
+.volunteer-contact-copy {
+  min-width: 0;
+}
+
+.volunteer-contact .eyebrow {
+  color: var(--lime);
+}
+
+.volunteer-contact h2 {
+  max-width: 960px;
+  margin: 25px 0 28px;
+  font-size: clamp(3rem, 6.3vw, 7.1rem);
+  font-weight: 800;
+  line-height: .96;
+  letter-spacing: -.065em;
+}
+
+.volunteer-contact-copy > p:not(.eyebrow) {
+  max-width: 630px;
+  margin: 0;
+  color: #d8dbd5;
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.6;
+}
+
+.volunteer-contact .button {
+  flex-shrink: 0;
+  margin-bottom: 6px;
+}
+
+@media (max-width: 1024px) {
+  .volunteer-hero {
+    gap: 4vw;
+  }
+
+  .volunteer-hero h1 {
+    font-size: clamp(3.2rem, 6.6vw, 4.7rem);
+  }
+
+  .volunteer-hero-statement {
+    font-size: clamp(2rem, 4vw, 2.7rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .volunteer-contact-inner {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .volunteer-contact h2 {
+    max-width: 790px;
+  }
+
+  .volunteer-contact .button {
+    justify-self: start;
+    margin: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .volunteer-hero {
+    grid-template-columns: 1fr;
+    gap: 45px;
+    padding: 145px 7vw 100px;
+  }
+
+  .volunteer-hero h1 {
+    max-width: 680px;
+    font-size: clamp(2.75rem, 8.5vw, 5.5rem);
+  }
+
+  .volunteer-hero-intro {
+    max-width: 630px;
+  }
+
+  .volunteer-hero-media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .volunteer-hero-statement {
+    padding: clamp(26px, 5vw, 42px);
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+  }
+
+  .volunteer-role-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .volunteer-role {
+    min-height: 270px;
+    padding: clamp(27px, 4.5vw, 40px);
+  }
+
+  .volunteer-role + .volunteer-role {
+    border-left: 0;
+    border-top: 1px solid var(--ink);
+  }
+
+  .volunteer-role-copy {
+    margin-top: 45px;
+  }
+
+  .volunteer-role h3 {
+    margin-bottom: 18px;
+    font-size: clamp(2rem, 5.2vw, 3rem);
+  }
+
+  .volunteer-role p {
+    max-width: 540px;
+  }
+
+  .volunteer-roles-heading h2,
+  .volunteer-contact h2 {
+    font-size: clamp(2.75rem, 8vw, 4.6rem);
+  }
+}
+
+@media (max-width: 380px) {
+  .volunteer-hero {
+    gap: 36px;
+    padding-top: 135px;
+  }
+
+  .volunteer-hero h1 {
+    margin-top: 22px;
+    font-size: 2.75rem;
+  }
+
+  .volunteer-hero-statement {
+    padding: 24px;
+    font-size: 2rem;
+  }
+
+  .volunteer-roles-heading h2,
+  .volunteer-contact h2 {
+    font-size: 2.65rem;
+  }
+
+  .volunteer-role {
+    padding: 24px;
+  }
+}
