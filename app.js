@@ -9,6 +9,53 @@
 
   // Navigation remains usable independently of the animation libraries.
   if (menu && nav) {
+    // Keep older uploaded page copies in sync with the complete static navigation.
+    // The HTML still contains every link for visitors without JavaScript.
+    const navigationItems = [
+      { page: 'about', href: 'about.html', label: 'Our story' },
+      { page: 'team', href: 'team.html', label: 'Our team' },
+      { page: 'programs', href: 'programs.html', label: 'Programs' },
+      { page: 'events', href: 'events.html', label: 'Events' },
+      { page: 'volunteer', href: 'volunteer.html', label: 'Volunteer with us', cta: true }
+    ];
+    const existingLinks = [...nav.children];
+    const needsRepair = existingLinks.length !== navigationItems.length || navigationItems.some((item, index) => {
+      const link = existingLinks[index];
+      return link?.tagName !== 'A' || link.getAttribute('href') !== item.href ||
+        link.textContent.replace(/\u2197\uFE0F?/g, '').trim() !== item.label ||
+        link.classList.contains('nav-cta') !== Boolean(item.cta);
+    });
+    if (needsRepair) {
+      nav.replaceChildren(...navigationItems.map((item) => {
+        const link = document.createElement('a');
+        link.href = item.href;
+        link.textContent = item.label;
+        if (item.cta) {
+          link.className = 'nav-cta';
+          const arrow = document.createElement('span');
+          arrow.className = 'arrow-icon';
+          arrow.setAttribute('aria-hidden', 'true');
+          arrow.dataset.arrow = 'ne';
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          const attributes = {
+            viewBox: '0 0 24 24', width: '20', height: '20', fill: 'none',
+            stroke: 'currentColor', 'stroke-width': '1.8', 'stroke-linecap': 'round',
+            'stroke-linejoin': 'round', 'aria-hidden': 'true', focusable: 'false'
+          };
+          Object.entries(attributes).forEach(([name, value]) => svg.setAttribute(name, value));
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', 'M5 19 19 5M5 5h14v14');
+          svg.append(path);
+          arrow.append(svg);
+          link.append(' ', arrow);
+        }
+        return link;
+      }));
+    }
+    [...nav.children].forEach((link, index) => {
+      if (navigationItems[index].page === page) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
     body.classList.add('nav-ready');
     const setMenu = (open, instant = false) => {
       if (instant) nav.classList.add('menu-instant');
