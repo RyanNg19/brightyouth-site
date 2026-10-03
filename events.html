@@ -9,25 +9,26 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@700&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&display=swap" />
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="motion.css" />
-    <link rel="stylesheet" href="events.css" />
+    <link rel="stylesheet" href="styles.css?v=20261002-remodel-final" />
+    <link rel="stylesheet" href="motion.css?v=20261002-remodel-final" />
+    <link rel="stylesheet" href="events.css?v=20261002-remodel-final" />
   </head>
   <body data-page="events">
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="index.html" aria-label="BrightYouth home"><span class="brand-mark">b</span><span>bright<br />youth</span></a>
-      <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <a class="brand" href="index.html" aria-label="BrightYouth home"><span class="brand-mark" aria-hidden="true">b</span><span>bright<br />youth</span></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
-        <a href="about.html">Our story</a>
+        <a href="about.html">Our story</a><a href="team.html">Our team</a>
         <a href="programs.html">Programs</a>
-        <a href="events.html">Events</a>
-        <a href="volunteer.html" class="nav-cta">Volunteer with us <span>↗</span></a>
+        <a href="events.html" aria-current="page">Events</a>
+        <a href="volunteer.html" class="nav-cta">Volunteer with us <span aria-hidden="true">↗</span></a>
       </nav>
     </header>
 
-    <main class="site-main events-page">
+    <main class="site-main events-page" id="main-content" tabindex="-1">
       <section class="events-hero" aria-labelledby="events-title">
-        <img class="events-hero-photo" src="assets/events/2025-lunar-stage.jpg" alt="" fetchpriority="high" />
+        <img class="events-hero-photo" src="assets/optimized/2025-lunar-stage-1600.jpg" srcset="assets/optimized/2025-lunar-stage-480.jpg 480w, assets/optimized/2025-lunar-stage-960.jpg 960w, assets/optimized/2025-lunar-stage-1600.jpg 1600w" sizes="100vw" width="2000" height="1333" alt="" fetchpriority="high" />
         <div class="events-hero-shade" aria-hidden="true"></div>
         <div class="events-hero-content">
           <p class="events-kicker">BrightYouth, in the moment</p>
@@ -35,7 +36,7 @@
           <p class="events-hero-intro">A look at where we gathered, explored, and learned together since 2024.</p>
           <div class="events-hero-actions">
             <a class="button button-lime" href="#year-2025">Explore the photos <span>↘</span></a>
-            <a class="button events-button-outline" href="volunteer.html">Join the next one <span>↗</span></a>
+            <a class="button events-button-outline" href="volunteer.html">Join the next one <span aria-hidden="true">↗</span></a>
           </div>
         </div>
         <span class="events-scroll-note" aria-hidden="true">Scroll to explore <span>↓</span></span>
@@ -63,15 +64,15 @@
 
         <div class="event-index" aria-label="Explore 2025 events">
           <a class="event-tile event-tile-coral" href="#lunar-new-year">
-            <div class="event-tile-photo"><img src="assets/events/2025-lunar-community.jpg" alt="BrightYouth volunteers at the Lunar New Year celebration" loading="lazy" /></div>
+            <div class="event-tile-photo"><img src="assets/optimized/2025-lunar-community-960.jpg" srcset="assets/optimized/2025-lunar-community-480.jpg 480w, assets/optimized/2025-lunar-community-960.jpg 960w, assets/optimized/2025-lunar-community-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, 29vw" width="2000" height="1334" alt="BrightYouth volunteers at the Lunar New Year celebration" loading="lazy" /></div>
             <div class="event-tile-copy"><span>Summit YMCA</span><h3>Lunar New Year</h3><span class="event-tile-arrow" aria-hidden="true">↗</span></div>
           </a>
           <a class="event-tile event-tile-blue" href="#hiking">
-            <div class="event-tile-photo"><img src="assets/events/2025-inclusive-trail.jpg" alt="Children and adults walking along a wooded trail" loading="lazy" /></div>
+            <div class="event-tile-photo"><img src="assets/optimized/2025-inclusive-trail-960.jpg" srcset="assets/optimized/2025-inclusive-trail-480.jpg 480w, assets/optimized/2025-inclusive-trail-960.jpg 960w, assets/optimized/2025-inclusive-trail-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, 29vw" width="1350" height="1800" alt="Children and adults walking along a wooded trail" loading="lazy" /></div>
             <div class="event-tile-copy"><span>Out on the trail</span><h3>Hiking together</h3><span class="event-tile-arrow" aria-hidden="true">↗</span></div>
           </a>
           <a class="event-tile event-tile-lime" href="#math-tutoring">
-            <div class="event-tile-photo"><img src="assets/events/2025-math-tutoring.jpg" alt="Students and volunteers working together in a classroom" loading="lazy" /></div>
+            <div class="event-tile-photo"><img src="assets/optimized/2025-math-tutoring-960.jpg" srcset="assets/optimized/2025-math-tutoring-480.jpg 480w, assets/optimized/2025-math-tutoring-960.jpg 960w, assets/optimized/2025-math-tutoring-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, 29vw" width="1707" height="1280" alt="Students and volunteers working together in a classroom" loading="lazy" /></div>
             <div class="event-tile-copy"><span>New Providence</span><h3>Math tutoring</h3><span class="event-tile-arrow" aria-hidden="true">↗</span></div>
           </a>
         </div>
@@ -85,8 +86,8 @@
               <span class="event-story-count">Two moments from the day</span>
             </div>
             <div class="event-story-media event-photo-duo">
-              <figure><img src="assets/events/2025-lunar-community.jpg" alt="BrightYouth volunteers speaking with an attendee at the Lunar New Year celebration" loading="lazy" /></figure>
-              <figure><img src="assets/events/2025-lunar-stage.jpg" alt="Two BrightYouth members speaking on stage at the Lunar New Year celebration" loading="lazy" /></figure>
+              <figure><img src="assets/optimized/2025-lunar-community-960.jpg" srcset="assets/optimized/2025-lunar-community-480.jpg 480w, assets/optimized/2025-lunar-community-960.jpg 960w, assets/optimized/2025-lunar-community-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, (max-width: 900px) 50vw, 52vw" width="2000" height="1334" alt="BrightYouth volunteers speaking with an attendee at the Lunar New Year celebration" loading="lazy" /></figure>
+              <figure><img src="assets/optimized/2025-lunar-stage-960.jpg" srcset="assets/optimized/2025-lunar-stage-480.jpg 480w, assets/optimized/2025-lunar-stage-960.jpg 960w, assets/optimized/2025-lunar-stage-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, (max-width: 900px) 50vw, 52vw" width="2000" height="1333" alt="Two BrightYouth members speaking on stage at the Lunar New Year celebration" loading="lazy" /></figure>
             </div>
           </article>
 
@@ -97,7 +98,7 @@
               <p>A day outside, making the trail a place to spend time together.</p>
               <span class="event-story-count">A moment on the trail</span>
             </div>
-            <div class="event-story-media"><img src="assets/events/2025-inclusive-trail.jpg" alt="Children and adults walking through the woods together" loading="lazy" /></div>
+            <div class="event-story-media"><img src="assets/optimized/2025-inclusive-trail-960.jpg" srcset="assets/optimized/2025-inclusive-trail-480.jpg 480w, assets/optimized/2025-inclusive-trail-960.jpg 960w, assets/optimized/2025-inclusive-trail-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, (max-width: 900px) 50vw, 52vw" width="1350" height="1800" alt="Children and adults walking through the woods together" loading="lazy" /></div>
           </article>
 
           <article class="event-story event-story-math" id="math-tutoring">
@@ -107,7 +108,7 @@
               <p>Math tutoring with Huaxia Chinese School at New Providence High School / Middle School.</p>
               <span class="event-story-count">A moment in the classroom</span>
             </div>
-            <div class="event-story-media"><img src="assets/events/2025-math-tutoring.jpg" alt="BrightYouth volunteers and students working through math activities in a classroom" loading="lazy" /></div>
+            <div class="event-story-media"><img src="assets/optimized/2025-math-tutoring-960.jpg" srcset="assets/optimized/2025-math-tutoring-480.jpg 480w, assets/optimized/2025-math-tutoring-960.jpg 960w, assets/optimized/2025-math-tutoring-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, (max-width: 900px) 50vw, 52vw" width="1707" height="1280" alt="BrightYouth volunteers and students working through math activities in a classroom" loading="lazy" /></div>
           </article>
         </div>
       </section>
@@ -120,15 +121,15 @@
 
         <div class="event-index" aria-label="Explore 2024 events">
           <a class="event-tile event-tile-lime" href="#grace-gift">
-            <div class="event-tile-photo"><img src="assets/events/2024-grace-gift-team.jpg" alt="BrightYouth members at the GRACE GIFT donation table" loading="lazy" /></div>
+            <div class="event-tile-photo"><img src="assets/optimized/2024-grace-gift-team-960.jpg" srcset="assets/optimized/2024-grace-gift-team-480.jpg 480w, assets/optimized/2024-grace-gift-team-960.jpg 960w, assets/optimized/2024-grace-gift-team-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, 29vw" width="2000" height="1500" alt="BrightYouth members at the GRACE GIFT donation table" loading="lazy" /></div>
             <div class="event-tile-copy"><span>Summit Farmers Market</span><h3>GRACE GIFT</h3><span class="event-tile-arrow" aria-hidden="true">↗</span></div>
           </a>
           <a class="event-tile event-tile-blue" href="#science-library">
-            <div class="event-tile-photo"><img src="assets/events/2024-science-library.jpg" alt="Young presenters teaching a science topic at the Summit Public Library" loading="lazy" /></div>
+            <div class="event-tile-photo"><img src="assets/optimized/2024-science-library-960.jpg" srcset="assets/optimized/2024-science-library-480.jpg 480w, assets/optimized/2024-science-library-960.jpg 960w, assets/optimized/2024-science-library-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, 29vw" width="1445" height="1079" alt="Young presenters teaching a science topic at the Summit Public Library" loading="lazy" /></div>
             <div class="event-tile-copy"><span>Summit Public Library</span><h3>Science together</h3><span class="event-tile-arrow" aria-hidden="true">↗</span></div>
           </a>
           <a class="event-tile event-tile-coral" href="#math-tutoring-2024">
-            <div class="event-tile-photo"><img src="assets/events/2024-math-tutoring.jpg" alt="BrightYouth volunteers helping children with math in a classroom" loading="lazy" /></div>
+            <div class="event-tile-photo"><img src="assets/optimized/2024-math-tutoring-960.jpg" srcset="assets/optimized/2024-math-tutoring-480.jpg 480w, assets/optimized/2024-math-tutoring-960.jpg 960w, assets/optimized/2024-math-tutoring-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, 29vw" width="2000" height="1500" alt="BrightYouth volunteers helping children with math in a classroom" loading="lazy" /></div>
             <div class="event-tile-copy"><span>In the classroom</span><h3>Math tutoring</h3><span class="event-tile-arrow" aria-hidden="true">↗</span></div>
           </a>
         </div>
@@ -142,8 +143,8 @@
               <span class="event-story-count">Two moments at the market</span>
             </div>
             <div class="event-story-media event-photo-duo">
-              <figure><img src="assets/events/2024-grace-gift-table.jpg" alt="BrightYouth volunteers at the GRACE GIFT donation table" loading="lazy" /></figure>
-              <figure><img src="assets/events/2024-grace-gift-team.jpg" alt="BrightYouth members gathered behind the GRACE GIFT table" loading="lazy" /></figure>
+              <figure><img src="assets/optimized/2024-grace-gift-table-960.jpg" srcset="assets/optimized/2024-grace-gift-table-480.jpg 480w, assets/optimized/2024-grace-gift-table-960.jpg 960w, assets/optimized/2024-grace-gift-table-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, (max-width: 900px) 50vw, 52vw" width="2000" height="1500" alt="BrightYouth volunteers at the GRACE GIFT donation table" loading="lazy" /></figure>
+              <figure><img src="assets/optimized/2024-grace-gift-team-960.jpg" srcset="assets/optimized/2024-grace-gift-team-480.jpg 480w, assets/optimized/2024-grace-gift-team-960.jpg 960w, assets/optimized/2024-grace-gift-team-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, (max-width: 900px) 50vw, 52vw" width="2000" height="1500" alt="BrightYouth members gathered behind the GRACE GIFT table" loading="lazy" /></figure>
             </div>
           </article>
 
@@ -154,7 +155,7 @@
               <p>BrightYouth members taught science topics at the Summit Public Library.</p>
               <span class="event-story-count">A moment of discovery</span>
             </div>
-            <div class="event-story-media"><img src="assets/events/2024-science-library.jpg" alt="Young presenters explaining a science topic at the Summit Public Library" loading="lazy" /></div>
+            <div class="event-story-media"><img src="assets/optimized/2024-science-library-960.jpg" srcset="assets/optimized/2024-science-library-480.jpg 480w, assets/optimized/2024-science-library-960.jpg 960w, assets/optimized/2024-science-library-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, (max-width: 900px) 50vw, 52vw" width="1445" height="1079" alt="Young presenters explaining a science topic at the Summit Public Library" loading="lazy" /></div>
           </article>
 
           <article class="event-story event-story-math-2024" id="math-tutoring-2024">
@@ -164,7 +165,7 @@
               <p>BrightYouth volunteers worked with students on math in the classroom.</p>
               <span class="event-story-count">A moment in the classroom</span>
             </div>
-            <div class="event-story-media"><img src="assets/events/2024-math-tutoring.jpg" alt="BrightYouth volunteers tutoring children in math at classroom desks" loading="lazy" /></div>
+            <div class="event-story-media"><img src="assets/optimized/2024-math-tutoring-960.jpg" srcset="assets/optimized/2024-math-tutoring-480.jpg 480w, assets/optimized/2024-math-tutoring-960.jpg 960w, assets/optimized/2024-math-tutoring-1600.jpg 1600w" sizes="(max-width: 650px) 88vw, (max-width: 900px) 50vw, 52vw" width="2000" height="1500" alt="BrightYouth volunteers tutoring children in math at classroom desks" loading="lazy" /></div>
           </article>
         </div>
       </section>
@@ -172,13 +173,13 @@
       <section class="cta-band events-cta">
         <p class="eyebrow">The next chapter</p>
         <h2>Come make a moment that matters.</h2>
-        <a class="button button-dark" href="volunteer.html">Volunteer with BrightYouth <span>↗</span></a>
+        <a class="button button-dark" href="volunteer.html">Volunteer with BrightYouth <span aria-hidden="true">↗</span></a>
       </section>
     </main>
 
-    <footer class="site-footer"><a class="brand" href="index.html"><span class="brand-mark">b</span><span>bright<br />youth</span></a><div><p>Built by young people with big hearts.</p><a href="mailto:BrighYouthorg@gmail.com">BrighYouthorg@gmail.com</a></div><div><a href="https://www.instagram.com/BrightYouthOrg/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://www.facebook.com/BrightYouthOrg" target="_blank" rel="noreferrer">Facebook ↗</a></div><small>BrightYouth is a 501(c)(3) nonprofit · EIN 99-1531644</small></footer>
+    <footer class="site-footer"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">b</span><span>bright<br />youth</span></a><div><p>Built by young people with big hearts.</p><a href="mailto:BrighYouthorg@gmail.com">BrighYouthorg@gmail.com</a></div><div><a href="https://www.instagram.com/BrightYouthOrg/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://www.facebook.com/BrightYouthOrg" target="_blank" rel="noopener noreferrer">Facebook ↗</a></div><small>BrightYouth is a 501(c)(3) nonprofit · EIN 99-1531644</small></footer>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js?v=20261002-remodel-anchors"></script>
   </body>
 </html>

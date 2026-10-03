@@ -74,7 +74,7 @@
   margin: 0 .06em;
   border: 3px solid rgba(255, 255, 255, .9);
   border-radius: 100px;
-  background: url("assets/events/2025-inclusive-trail.jpg") center 57% / cover;
+  background: url("assets/optimized/2025-inclusive-trail-480.jpg") center 57% / cover;
   box-shadow: 0 14px 30px rgba(0, 0, 0, .22);
   transform: rotate(-7deg);
   vertical-align: .03em;
@@ -175,6 +175,7 @@
 .events-year-nav a {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
   gap: 14px;
   padding: 10px 17px;
   border: 1px solid var(--event-ink);
@@ -271,7 +272,6 @@
 
 .event-tile-blue img { object-position: center 70%; }
 
-.event-tile:hover img,
 .event-tile:focus-visible img {
   transform: scale(1.06);
 }
@@ -308,7 +308,6 @@
   transition: transform .3s cubic-bezier(.22, 1, .36, 1);
 }
 
-.event-tile:hover .event-tile-arrow,
 .event-tile:focus-visible .event-tile-arrow {
   transform: translate(3px, -3px);
 }
@@ -421,7 +420,11 @@
 
 .event-story-gift .event-photo-duo figure + figure { border-top-color: #d9ff4a; }
 
-.event-photo-duo figure:hover { flex-grow: 1.5; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .event-photo-duo figure:hover { flex-grow: 1.5; }
+  .event-tile:hover img { transform: scale(1.06); }
+  .event-tile:hover .event-tile-arrow { transform: translate(3px,-3px); }
+}
 
 .event-photo-duo figure:first-child img { object-position: center 47%; }
 .event-photo-duo figure:last-child img { object-position: center 43%; }
