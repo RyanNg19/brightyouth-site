@@ -1,24 +1,28 @@
 (() => {
-  const page = document.body.dataset.page;
+  'use strict';
+  const body = document.body;
+  const page = body.dataset.page;
   const menu = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.site-nav');
+  const header = document.querySelector('.site-header');
+  const mobileNav = window.matchMedia('(max-width: 800px)');
 
-  if (nav) {
-    const current = { about: 'about.html', programs: 'programs.html', events: 'events.html', volunteer: 'volunteer.html' }[page] || '';
-    const activeLink = [...nav.querySelectorAll('a')].find((link) => link.getAttribute('href') === current);
-    if (activeLink) activeLink.setAttribute('aria-current', 'page');
-  }
-
+  // Navigation remains usable independently of the animation libraries.
   if (menu && nav) {
+    body.classList.add('nav-ready');
     const setMenu = (open, instant = false) => {
       if (instant) nav.classList.add('menu-instant');
       nav.classList.toggle('is-open', open);
+      nav.inert = mobileNav.matches && !open;
       menu.setAttribute('aria-expanded', String(open));
       menu.textContent = open ? 'Close' : 'Menu';
       if (instant) requestAnimationFrame(() => requestAnimationFrame(() => nav.classList.remove('menu-instant')));
     };
-
+    setMenu(false, true);
     menu.addEventListener('click', (event) => setMenu(!nav.classList.contains('is-open'), event.detail === 0));
+    nav.addEventListener('click', (event) => {
+      if (event.target.closest('a')) setMenu(false, true);
+    });
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && nav.classList.contains('is-open')) {
         setMenu(false, true);
@@ -26,156 +30,151 @@
       }
     });
     document.addEventListener('pointerdown', (event) => {
-      if (nav.classList.contains('is-open') && !nav.contains(event.target) && !menu.contains(event.target)) setMenu(false);
+      if (nav.classList.contains('is-open') && !header.contains(event.target)) setMenu(false);
     });
+    header.addEventListener('focusout', (event) => {
+      if (event.relatedTarget && !header.contains(event.relatedTarget)) setMenu(false, true);
+    });
+    mobileNav.addEventListener('change', () => setMenu(false, true));
   }
 
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!window.gsap || !window.ScrollTrigger || reducedMotion) return;
-
+  if (!window.gsap || !window.ScrollTrigger || !gsap.matchMedia) return;
   gsap.registerPlugin(ScrollTrigger);
-  document.body.classList.add('motion-ready');
-  const mobile = window.matchMedia('(max-width: 800px)').matches;
-  const smallTravel = mobile ? 10 : 14;
-  const headlineTravel = mobile ? 16 : 26;
+  const media = gsap.matchMedia();
+  const focusReveals = new Map();
 
-  const revealEditorial = (section, eyebrow, heading, following = []) => {
-    if (!section || !heading) return;
-    const timeline = gsap.timeline({ scrollTrigger: { trigger: section, start: 'top 83%', once: true } });
-    timeline.eventCallback('onComplete', () => section.classList.add('reveal-complete'));
-    if (eyebrow) timeline.from(eyebrow, { y: smallTravel, autoAlpha: 0, duration: .55, ease: 'power3.out' }, 0);
-    timeline.from(heading, { y: headlineTravel, autoAlpha: 0, duration: .82, ease: 'power3.out' }, eyebrow ? .1 : 0);
-    if (following.length) timeline.from(following, { y: smallTravel, autoAlpha: 0, duration: .65, stagger: .08, ease: 'power3.out' }, .28);
-  };
-
-  gsap.from('.site-header', { y: -12, autoAlpha: 0, duration: .55, ease: 'power3.out' });
-
-  if (page === 'events') {
-    const hero = document.querySelector('.events-hero');
-    gsap.from('.events-hero-photo', { scale: 1.08, duration: 1.5, ease: 'power3.out' });
-    gsap.to('.events-hero-photo', {
-      scale: 1.04, opacity: .2, ease: 'none',
-      scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: .6 }
-    });
-    gsap.from(hero.querySelectorAll('.events-kicker, h1, .events-hero-intro, .events-hero-actions'), {
-      y: mobile ? 15 : 28, autoAlpha: 0, duration: .9, stagger: .11, ease: 'power3.out', delay: .13
-    });
-
-    const compactGallery = window.matchMedia('(max-width: 650px)').matches;
-    document.querySelectorAll('.event-year').forEach((year) => {
-      const yearHeading = year.querySelector('.event-year-heading');
-      gsap.from(yearHeading.children, {
-        y: mobile ? 15 : 28, autoAlpha: 0, duration: .8, stagger: .12, ease: 'power3.out',
-        scrollTrigger: { trigger: yearHeading, start: 'top 85%', once: true }
+  // Each media context automatically reverts styles, pins, and triggers on changes.
+  media.add({
+    reduced: '(prefers-reduced-motion: reduce)',
+    desktop: '(min-width: 801px)',
+    mobile: '(max-width: 800px)',
+    compact: '(max-width: 650px)'
+  }, (context) => {
+    if (context.conditions.reduced) return;
+    const mobile = context.conditions.mobile;
+    const travel = mobile ? 12 : 24;
+    const cleanups = [];
+    const reveal = (block, targets = [block], delay = 0) => {
+      if (!block || block.dataset.revealed === 'true' || !targets.length) return;
+      const tween = gsap.from(targets, {
+        y: travel, autoAlpha: 0, duration: .75, stagger: .08,
+        delay, ease: 'power3.out',
+        scrollTrigger: { trigger: block, start: 'top 92%', once: true },
+        onComplete: () => {
+          block.dataset.revealed = 'true';
+          focusReveals.delete(block);
+        }
       });
-      const index = year.querySelector('.event-index');
-      gsap.from(index.children, {
-        y: mobile ? 12 : 28, autoAlpha: 0, duration: .8, stagger: .12, ease: 'power3.out',
-        scrollTrigger: { trigger: index, start: 'top 84%', once: true }
-      });
+      focusReveals.set(block, tween);
+      cleanups.push(() => focusReveals.delete(block));
+    };
 
-      year.querySelectorAll('.event-story').forEach((story, storyIndex) => {
-      if (storyIndex && !compactGallery) {
-        gsap.fromTo(story, { y: 48, scale: .985 }, {
-          y: 0, scale: 1, ease: 'none',
-          scrollTrigger: { trigger: story, start: 'top 95%', end: 'top 56%', scrub: .6 }
-        });
-      } else {
-        gsap.from(story, {
-          y: compactGallery ? 18 : 28, autoAlpha: 0, duration: .8, ease: 'power3.out',
-          scrollTrigger: { trigger: story, start: 'top 88%', once: true }
+    document.querySelectorAll('[data-reveal-group]').forEach((group) => reveal(group, [...group.children]));
+    document.querySelectorAll('[data-reveal]').forEach((item) => reveal(item));
+    document.querySelectorAll('[data-photo]').forEach((wrapper) => {
+      const image = wrapper.querySelector('img');
+      if (!image) return;
+      gsap.fromTo(image, { scale: 1.045 }, {
+        scale: 1, ease: 'none',
+        scrollTrigger: { trigger: wrapper, start: 'top bottom', end: 'bottom top', scrub: .65 }
+      });
+    });
+    const cta = document.querySelector('.cta-band');
+    if (cta && !cta.hasAttribute('data-reveal-group')) reveal(cta, [...cta.children]);
+
+    if (page === 'home') {
+      const heroPhoto = document.querySelector('.home-hero-media');
+      if (heroPhoto && heroPhoto.dataset.revealed !== 'true') {
+        gsap.from(heroPhoto, {
+          clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'power3.out', delay: .12,
+          onComplete: () => { heroPhoto.dataset.revealed = 'true'; }
         });
       }
-      gsap.from(story.querySelectorAll('.event-story-copy > *'), {
-        y: smallTravel, autoAlpha: 0, duration: .65, stagger: .08, ease: 'power3.out',
-        scrollTrigger: { trigger: story, start: 'top 76%', once: true }
+      const scrub = document.querySelector('.scrub-text');
+      if (scrub) {
+        const original = scrub.textContent.trim();
+        const accessible = document.createElement('span');
+        accessible.className = 'sr-only';
+        accessible.textContent = original;
+        const visual = document.createElement('span');
+        visual.setAttribute('aria-hidden', 'true');
+        original.split(/\s+/).forEach((word, index) => {
+          if (index) visual.append(' ');
+          const span = document.createElement('span');
+          span.textContent = word;
+          visual.append(span);
+        });
+        scrub.replaceChildren(accessible, visual);
+        gsap.fromTo(visual.children, { opacity: .55 }, {
+          opacity: 1, stagger: .065, ease: 'none',
+          scrollTrigger: { trigger: scrub, start: 'top 88%', end: 'bottom 60%', scrub: .4 }
+        });
+        cleanups.push(() => scrub.replaceChildren(document.createTextNode(original)));
+      }
+      if (context.conditions.desktop) {
+        const heading = document.querySelector('.stack-heading');
+        const cards = document.querySelector('.stack-cards');
+        ScrollTrigger.create({
+          trigger: cards, start: 'top 120px', end: 'bottom 55%',
+          pin: heading, pinSpacing: false, invalidateOnRefresh: true
+        });
+        document.querySelectorAll('.stack-card').forEach((card, index) => {
+          if (index) gsap.to(card, {
+            y: -65 * index, ease: 'none',
+            scrollTrigger: { trigger: card, start: 'top bottom', end: 'top 35%', scrub: true, invalidateOnRefresh: true }
+          });
+        });
+      }
+    } else if (page === 'events') {
+      const hero = document.querySelector('.events-hero');
+      reveal(hero, [...hero.querySelector('.events-hero-content').children]);
+      gsap.fromTo('.events-hero-photo', { scale: 1.05, opacity: 1 }, {
+        scale: 1, opacity: .35, ease: 'none',
+        scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: .6 }
       });
-      story.querySelectorAll('.event-story-media img').forEach((photo) => {
-        gsap.fromTo(photo, { scale: .9 }, {
-          scale: 1, ease: 'none',
-          scrollTrigger: { trigger: story, start: 'top 92%', end: 'top 36%', scrub: .6 }
+      document.querySelectorAll('.event-year').forEach((year) => {
+        const heading = year.querySelector('.event-year-heading');
+        const index = year.querySelector('.event-index');
+        reveal(heading, [...heading.children]);
+        reveal(index, [...index.children]);
+        year.querySelectorAll('.event-story').forEach((story, storyIndex) => {
+          if (storyIndex && !context.conditions.compact) {
+            gsap.fromTo(story, { y: 36, scale: .99 }, {
+              y: 0, scale: 1, ease: 'none',
+              scrollTrigger: { trigger: story, start: 'top bottom', end: 'top 56%', scrub: .6 }
+            });
+          }
+          const copy = story.querySelector('.event-story-copy');
+          reveal(copy, [...copy.children]);
+          story.querySelectorAll('.event-story-media img').forEach((image) => {
+            gsap.fromTo(image, { scale: 1.035 }, {
+              scale: 1, ease: 'none',
+              scrollTrigger: { trigger: story, start: 'top bottom', end: 'bottom top', scrub: .6 }
+            });
+          });
         });
       });
-      });
-    });
-  } else if (page === 'volunteer') {
-    const hero = document.querySelector('.volunteer-hero');
-    const [eyebrow, headline, description] = hero.querySelector('div:first-child').children;
-    const poster = hero.querySelector('.volunteer-poster');
-    const intro = gsap.timeline();
-    intro.from(eyebrow, { y: smallTravel, autoAlpha: 0, duration: .58, ease: 'power3.out' }, .08)
-      .from(headline, { y: headlineTravel, autoAlpha: 0, duration: .92, ease: 'power3.out' }, .2)
-      .from(description, { y: smallTravel, autoAlpha: 0, duration: .72, ease: 'power3.out' }, .4)
-      .from(poster, { y: mobile ? 10 : 18, autoAlpha: 0, duration: .95, ease: 'power3.out' }, .27);
-
-    const posterType = poster.querySelector('span');
-    const lines = posterType.innerText.split(/\n/).map((line) => line.trim()).filter(Boolean);
-    posterType.setAttribute('aria-label', 'Your time can change a day');
-    posterType.replaceChildren(...lines.map((line) => {
-      const word = document.createElement('span');
-      word.className = 'poster-word';
-      word.setAttribute('aria-hidden', 'true');
-      word.textContent = line;
-      return word;
-    }));
-    const words = posterType.querySelectorAll('.poster-word');
-    gsap.set(words, { y: mobile ? 9 : 16, scale: .97, opacity: .25, transformOrigin: 'left center' });
-    gsap.timeline({ scrollTrigger: { trigger: poster, start: 'top 88%', end: 'bottom 28%', scrub: .55 } })
-      .to(words, { y: 0, scale: 1, opacity: 1, stagger: .24, duration: 1, ease: 'none' });
-
-    const ways = document.querySelector('.ways');
-    revealEditorial(ways, ways.querySelector('.eyebrow'), ways.querySelector('h2'));
-    ways.querySelectorAll('.ways-grid article').forEach((article) => {
-      const [number, title, description] = article.children;
-      gsap.timeline({ scrollTrigger: { trigger: article, start: 'top 87%', once: true, onEnter: () => article.classList.add('is-visible') }, onComplete: () => article.classList.add('reveal-complete') })
-        .from(number, { y: 8, autoAlpha: 0, duration: .5, ease: 'power3.out' }, 0)
-        .from(title, { y: mobile ? 12 : 18, autoAlpha: 0, duration: .7, ease: 'power3.out' }, .09)
-        .from(description, { y: 10, autoAlpha: 0, duration: .65, ease: 'power3.out' }, .19);
-    });
-    const contact = document.querySelector('.contact-panel');
-    revealEditorial(contact, contact.querySelector('.eyebrow'), contact.querySelector('h2'), [contact.querySelector('p:not(.eyebrow)'), contact.querySelector('.button')]);
-  } else {
-    const hero = document.querySelector('.hero-copy, .page-hero');
-    if (hero) gsap.from([...hero.children], { y: mobile ? 14 : 25, autoAlpha: 0, duration: .75, stagger: .08, ease: 'power3.out', delay: .08 });
-
-    const homeImage = document.querySelector('.hero-art > img');
-    if (homeImage) gsap.from(homeImage, { clipPath: 'inset(0 0 0 100%)', duration: 1.25, ease: 'expo.out', delay: .18 });
-
-    const scrub = document.querySelector('.scrub-text');
-    if (scrub) {
-      const original = scrub.textContent.trim();
-      scrub.setAttribute('aria-label', original);
-      scrub.innerHTML = original.split(/\s+/).map((word) => `<span aria-hidden="true">${word}</span>`).join(' ');
-      const words = scrub.querySelectorAll('span');
-      gsap.set(words, { opacity: .18 });
-      gsap.to(words, { opacity: 1, stagger: .075, ease: 'none', scrollTrigger: { trigger: scrub, start: 'top 82%', end: 'bottom 55%', scrub: true } });
+    } else if (page === 'team') {
+      const hero = document.querySelector('.team-hero');
+      reveal(hero, [...hero.children]);
+      document.querySelectorAll('.team-profile').forEach((profile, index) => reveal(profile, [profile], mobile ? 0 : (index % 2) * .1));
     }
 
-    const programHeading = document.querySelector('.section-heading');
-    if (programHeading) revealEditorial(programHeading, programHeading.querySelector('.eyebrow'), programHeading.querySelector('h2'), [programHeading.querySelector('.text-link')]);
-    const bento = document.querySelector('.bento-grid');
-    if (bento) gsap.from(bento.children, { y: mobile ? 12 : 20, autoAlpha: 0, duration: .67, stagger: .075, ease: 'power3.out', scrollTrigger: { trigger: bento, start: 'top 84%', once: true } });
+    // Photos have reserved dimensions; refreshing on lazy image loads can interrupt
+    // a native anchor scroll. Only font metric changes need an explicit refresh.
+    const refresh = () => ScrollTrigger.refresh();
+    let active = true;
+    if (document.fonts) document.fonts.ready.then(() => { if (active) refresh(); });
+    return () => {
+      active = false;
+      cleanups.forEach((cleanup) => cleanup());
+    };
+  });
 
-    const stackHeading = document.querySelector('.stack-heading');
-    if (stackHeading) revealEditorial(stackHeading, stackHeading.querySelector('.eyebrow'), stackHeading.querySelector('h2'), [stackHeading.querySelector('p:last-child')]);
-    gsap.utils.toArray('.stack-card').forEach((card, index) => {
-      if (index) gsap.to(card, { y: -65 * index, ease: 'none', scrollTrigger: { trigger: card, start: 'top bottom', end: 'top 35%', scrub: true } });
+  // Keyboard visitors never have to wait for an entrance reveal to reach a link.
+  document.addEventListener('focusin', (event) => {
+    focusReveals.forEach((tween, block) => {
+      if (block.contains(event.target)) tween.progress(1);
     });
-
-    document.querySelectorAll('.program-row').forEach((row) => {
-      const copy = row.querySelector('.program-copy');
-      revealEditorial(row, copy.querySelector('.eyebrow'), copy.querySelector('h2'), [copy.querySelector('p:not(.eyebrow)'), copy.querySelector('.text-link')]);
-    });
-    document.querySelectorAll('.program-image img, .about-image img, .testimonial-image img').forEach((image) => {
-      gsap.from(image, { scale: 1.04, duration: 1.1, ease: 'power2.out', scrollTrigger: { trigger: image.parentElement, start: 'top 84%', once: true } });
-    });
-    document.querySelectorAll('.values article').forEach((card) => {
-      gsap.from(card.children, { y: mobile ? 10 : 16, autoAlpha: 0, duration: .64, stagger: .08, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 86%', once: true } });
-    });
-    const quote = document.querySelector('.testimonial blockquote');
-    if (quote) gsap.from(quote, { y: headlineTravel, autoAlpha: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: quote, start: 'top 82%', once: true } });
-  }
-
-  const cta = document.querySelector('.cta-band');
-  if (cta) revealEditorial(cta, cta.querySelector('.eyebrow'), cta.querySelector('h2'), [cta.querySelector('.button')]);
+  });
 })();
